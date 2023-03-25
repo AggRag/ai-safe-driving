@@ -39,6 +39,12 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
   public canvasRef!: ElementRef;
 
   /**
+   * Audio Ref element
+   */
+  @ViewChild('audioRef')
+  public audioRef!: ElementRef;
+
+  /**
    * Canvas context
    */
   private context: CanvasRenderingContext2D = null;
@@ -100,6 +106,7 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
       this.leftEyeClose$.next(leftRatio < 0.2);
       this.righEyeClose$.next(rightRatio < 0.2);
     });
+    this.playAudioOnSleeping();
   }
 
   private async initVideoStream(): Promise<void> {
@@ -171,6 +178,21 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
     const v1: number = this.getDistance(points[3], points[11]);
     const v2: number = this.getDistance(points[5], points[9]);
     return (v1 + v2) / (2 * h);
+  }
+
+  /**
+   * Play audio on sleeping
+   */
+  private playAudioOnSleeping(): void {
+    this.sleeping$.pipe(takeUntil(this.destroy$)).subscribe((isSleeping: boolean) => {
+      const audioEl: HTMLAudioElement = this.audioRef.nativeElement;
+      if (isSleeping) {
+        audioEl.loop = true;
+        audioEl.play();
+      } else {
+        audioEl.pause();
+      }
+    });
   }
 
   /**
