@@ -1,2 +1,8 @@
-<canvas #canvasRef width="800" height="800"></canvas>
-<div>{{ sleeping$ | async }}</div>
+<div class="demo-container">
+  <div class="columns">
+    <div class="column indicator"></div>
+    <div class="column dashboard"></div>
+  </div>
+  <canvas #canvasRef width="800" height="800"></canvas>
+  <div>{{ sleeping$ | async }}</div>
+</div>

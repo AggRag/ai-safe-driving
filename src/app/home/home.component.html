@@ -1,17 +1,23 @@
-<main>
+<span class="cursor"></span>
+<main #main>
   <article>
     <!-- Ist Section -->
     <section class="section">
       <div class="container">
-        <div class="columns is-vcentered is-centered">
-          <div class="column">
-            <h1 class="title has-text-white">Hello Humans</h1>
-            <p class="subtitle has-text-white">I am here to help you stay <strong>safe</strong>!</p>
-          </div>
-          <div class="column">
-            <figure class="image is-2by3">
-              <img src="/assets/intro.svg" />
+        <div class="card">
+          <div class="card-image">
+            <figure class="image">
+              <img src="/assets/intro.gif" />
             </figure>
+          </div>
+          <div class="card-content is-overlay">
+            <div style="position: relative; margin: 0; top: 50%">
+              <h1 class="title has-text-white is-size-1">Hello Humans</h1>
+              <p class="subtitle has-text-white is-size-2">I am here to help you stay safe!</p>
+              <div>
+                <button class="button" (click)="scrollToNextSection()">Next</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -30,6 +36,10 @@
               worldwide. AI can be leveraged to identify and predict potentially hazardous scenarios on the road, alert
               drivers and take necessary measures to prevent accidents before they occur.
             </p>
+            <div>
+              <button class="button" (click)="scrollToPreviousSection()">Previous</button>
+              <button class="button" (click)="scrollToNextSection()">Next</button>
+            </div>
           </div>
           <div class="column is-one-quarter">
             <div class="road-strip"></div>
@@ -51,6 +61,9 @@
               697 fatalities caused by “drowsy driving.” In 2017, there were 91,000 police-reported crashes caused by a
               tired driver. Around 50,000 people were injured as a result.
             </p>
+            <div>
+              <button class="button" (click)="scrollToNextSection()">Next</button>
+            </div>
           </div>
           <div class="column is-one-quarter">
             <div class="road-strip"></div>
@@ -88,6 +101,9 @@
                 <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" />
               </figure>
             </div>
+            <div>
+              <button class="button" (click)="scrollToNextSection()">Next</button>
+            </div>
           </div>
         </div>
       </div>
@@ -107,6 +123,9 @@
             <p class="is-size-4 has-text-white">But</p>
             <p class="is-size-4 has-text-white">I am not just restricted to this</p>
             <p class="is-size-4 has-text-white">I can help you in many other ways.</p>
+            <div>
+              <button class="button" (click)="scrollToNextSection()">Next</button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,6 +145,9 @@
             <p class="is-size-4 has-text-white">But</p>
             <p class="is-size-4 has-text-white">I am not just restricted to this</p>
             <p class="is-size-4 has-text-white">I can help you in many other ways.</p>
+            <div>
+              <button class="button" (click)="scrollToNextSection()">Next</button>
+            </div>
           </div>
         </div>
       </div>
