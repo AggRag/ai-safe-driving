@@ -2,13 +2,30 @@
   <div class="container">
     <div class="columns p-4">
       <div class="column indicator" style="background-color: black">
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <div class="py-5" [style.visibility]="(sleeping$ | async) ? 'visible' : 'hidden'">
+              <figure class="image is-128x128">
+                <img src="/assets/alert.svg" />
+              </figure>
+              <div class="p-2">
+                <span class="has-text-white is-size-4">Wake Up !</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="py-2">
-          <span class="has-text-white is-size-4">BlinkRate &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">Blink-Rate &nbsp;:&nbsp;</span>
           <span class="has-text-white is-size-4">{{ (blinkingRate$ | async) || 24 }}</span>
         </div>
         <div class="py-2">
           <span class="has-text-white is-size-4">Yawns &nbsp;:&nbsp;</span>
           <span class="has-text-white is-size-4">{{ yawns$ | async }}</span>
+        </div>
+        <div class="py-2">
+          <span class="has-text-white is-size-4">Distractions &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">{{ distractionCount$ | async }}</span>
         </div>
       </div>
       <div class="column dashboard">
