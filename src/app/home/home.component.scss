@@ -7,6 +7,7 @@
   display: none;
 }
 
+
 main {
   position: fixed;
   top: 0;
@@ -19,6 +20,7 @@ main {
   transform: rotate(-90deg) translateX(-100vh);
   overflow-x: hidden;
   overflow-y: scroll;
+  
   /*   scroll-snap-type: y mandatory; */
 }
 
@@ -52,6 +54,7 @@ section {
   height: 20px;
   background-color: white;
   display: inline-block;
+  
 }
 
 $size: 36px;
@@ -69,4 +72,12 @@ $size: 36px;
   left: -$size/2;
   top: -$size/2;
   box-sizing: border-box;
+}
+
+.button{
+  margin-right: 10px;
+}
+
+figure{
+  margin-bottom: 10px;
 }
