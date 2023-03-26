@@ -108,6 +108,10 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
    */
   public yawns$: BehaviorSubject<number> = new BehaviorSubject(0);
 
+  private faceMovement$: Subject<boolean> = new Subject();
+
+  public distractionCount$: BehaviorSubject<number> = new BehaviorSubject(0);
+
   constructor() {}
 
   public async ngAfterViewInit(): Promise<void> {
@@ -122,6 +126,7 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
     this.detectDrowsyness();
     this.playAudioOnSleeping();
     this.countYawns();
+    this.countDistractions();
   }
 
   private async initVideoStream(): Promise<void> {
@@ -159,7 +164,7 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
     if (!faces[0]) {
       return null;
     }
-    const points = faces?.[0].keypoints.filter((e) => ['lips'].includes(e.name));
+    const points = faces?.[0].keypoints.filter((e) => ['leftEye', 'rightEye', 'lips'].includes(e.name));
     if (!points) {
       return;
     }
@@ -232,12 +237,26 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
       this.leftEyeClose$.next(leftRatio < 0.2);
       this.righEyeClose$.next(rightRatio < 0.2);
       this.mouthOpen$.next(this.calcMouthOpen(keyPoints.filter((e) => e.name === 'lips')));
+      const nosePoint: Keypoint = keyPoints[3];
+      const facePoints: Keypoint[] = keyPoints.filter((e) => e.name === 'faceOval');
+      const leftDist: number = this.getDistance(nosePoint, facePoints[23]);
+      const rightDist: number = this.getDistance(nosePoint, facePoints[5]);
+      const topDownDist: number = this.getDistance(facePoints[0], facePoints[14]);
+      this.faceMovement$.next(leftDist / topDownDist < 0.25 || rightDist / topDownDist < 0.25);
     });
   }
 
   private countYawns(): void {
-    this.mouthOpen$.pipe(takeUntil(this.destroy$), auditTime(1500)).subscribe((value: boolean) => {
+    this.mouthOpen$.pipe(takeUntil(this.destroy$), auditTime(1000)).subscribe((value: boolean) => {
       this.yawns$.next(this.yawns$.value + (value ? 1 : 0));
+    });
+  }
+
+  private countDistractions(): void {
+    this.faceMovement$.pipe(takeUntil(this.destroy$), sampleTime(1000)).subscribe((value: boolean) => {
+      if (value) {
+        this.distractionCount$.next(this.distractionCount$.value + 1);
+      }
     });
   }
 
