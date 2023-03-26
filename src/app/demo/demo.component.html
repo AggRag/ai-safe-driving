@@ -27,6 +27,9 @@
           <span class="has-text-white is-size-4">Distractions &nbsp;:&nbsp;</span>
           <span class="has-text-white is-size-4">{{ distractionCount$ | async }}</span>
         </div>
+        <div class="py-3 my-2">
+          <a class="button is-outlined is-medium" [routerLink]="['/']">Exit</a>
+        </div>
       </div>
       <div class="column dashboard">
         <div style="display: flex; flex-direction: column">
