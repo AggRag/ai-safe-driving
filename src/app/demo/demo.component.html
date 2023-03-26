@@ -3,8 +3,12 @@
     <div class="columns p-4">
       <div class="column indicator" style="background-color: black">
         <div class="py-2">
-          <span class="has-text-white">BlinkRate/Min&nbsp;:&nbsp;</span>
-          <span class="has-text-white">{{ (blinkingRate$ | async) || 24 }}</span>
+          <span class="has-text-white is-size-4">BlinkRate &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">{{ (blinkingRate$ | async) || 24 }}</span>
+        </div>
+        <div class="py-2">
+          <span class="has-text-white is-size-4">Yawns &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">{{ yawns$ | async }}</span>
         </div>
       </div>
       <div class="column dashboard">

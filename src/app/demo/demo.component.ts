@@ -17,6 +17,7 @@ import { auditTime } from 'rxjs';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs';
 import { bufferTime } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-demo',
@@ -71,6 +72,9 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
    */
   private destroy$: Subject<void> = new Subject();
 
+  /**
+   * Keypoints
+   */
   private keyPoints$: Subject<Keypoint[]> = new Subject();
 
   private leftEyeClose$: Subject<boolean> = new Subject();
@@ -94,6 +98,16 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
     })
   );
 
+  /**
+   * Mouth open subject
+   */
+  private mouthOpen$: Subject<boolean> = new Subject();
+
+  /**
+   * calculate number of yawns
+   */
+  public yawns$: BehaviorSubject<number> = new BehaviorSubject(0);
+
   constructor() {}
 
   public async ngAfterViewInit(): Promise<void> {
@@ -105,14 +119,9 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
       refineLandmarks: true,
     });
     this.detectFace();
-    this.keyPoints$.pipe(takeUntil(this.destroy$), auditTime(50)).subscribe((keyPoints: Keypoint[]) => {
-      const leftRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'leftEye'));
-      const rightRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'rightEye'));
-      this.leftEyeClose$.next(leftRatio < 0.2);
-      this.righEyeClose$.next(rightRatio < 0.2);
-    });
+    this.detectDrowsyness();
     this.playAudioOnSleeping();
-    this.blinkingRate$.pipe(takeUntil(this.destroy$)).subscribe((value: number) => console.log(value));
+    this.countYawns();
   }
 
   private async initVideoStream(): Promise<void> {
@@ -150,7 +159,7 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
     if (!faces[0]) {
       return null;
     }
-    const points = faces?.[0].keypoints.filter((e) => ['leftEye', 'rightEye'].includes(e.name));
+    const points = faces?.[0].keypoints.filter((e) => ['lips'].includes(e.name));
     if (!points) {
       return;
     }
@@ -187,6 +196,20 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Get lips aspect ratio
+   * @param points
+   * @returns
+   */
+  private calcMouthOpen(points: Keypoint[]): boolean {
+    const p1x: number = (points[0].x + points[1].x) / 2;
+    const p1y: number = (points[0].y + points[1].y) / 2;
+    const p2x: number = (points[3].x + points[2].x) / 2;
+    const p2y: number = (points[3].y + points[2].y) / 2;
+    const distance: number = this.getDistance({ x: p1x, y: p1y }, { x: p2x, y: p2y });
+    return distance > 40;
+  }
+
+  /**
    * Play audio on sleeping
    */
   private playAudioOnSleeping(): void {
@@ -199,6 +222,22 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
         audioEl.pause();
         audioEl.currentTime = 0;
       }
+    });
+  }
+
+  private detectDrowsyness(): void {
+    this.keyPoints$.pipe(takeUntil(this.destroy$), auditTime(50)).subscribe((keyPoints: Keypoint[]) => {
+      const leftRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'leftEye'));
+      const rightRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'rightEye'));
+      this.leftEyeClose$.next(leftRatio < 0.2);
+      this.righEyeClose$.next(rightRatio < 0.2);
+      this.mouthOpen$.next(this.calcMouthOpen(keyPoints.filter((e) => e.name === 'lips')));
+    });
+  }
+
+  private countYawns(): void {
+    this.mouthOpen$.pipe(takeUntil(this.destroy$), auditTime(1500)).subscribe((value: boolean) => {
+      this.yawns$.next(this.yawns$.value + (value ? 1 : 0));
     });
   }
 
