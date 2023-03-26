@@ -9,22 +9,14 @@ import {
   Face,
   Keypoint,
 } from '@tensorflow-models/face-landmarks-detection';
-import { interval, map } from 'rxjs';
+import { interval, map, sampleTime } from 'rxjs';
 import { Subject } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs';
 import { auditTime } from 'rxjs';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs';
-
-type Pixel = {
-  x: number;
-  y: number;
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-};
+import { bufferTime } from 'rxjs';
 
 @Component({
   selector: 'app-demo',
@@ -86,7 +78,20 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
   private righEyeClose$: Subject<boolean> = new Subject();
 
   public sleeping$: Observable<boolean> = combineLatest([this.leftEyeClose$, this.righEyeClose$]).pipe(
+    sampleTime(2000),
     map((values: boolean[]) => values[0] && values[1])
+  );
+
+  public blinkingRate$: Observable<number> = combineLatest([this.leftEyeClose$, this.righEyeClose$]).pipe(
+    map((values: boolean[]) => values[0] || values[1]),
+    bufferTime(10000),
+    map((values: boolean[]) => {
+      let blinkCount: number = 0;
+      for (let i = 0; i < values.length - 1; i++) {
+        blinkCount = values[i] !== values[i + 1] ? blinkCount + 1 : blinkCount;
+      }
+      return blinkCount * 6;
+    })
   );
 
   constructor() {}
@@ -100,13 +105,14 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
       refineLandmarks: true,
     });
     this.detectFace();
-    this.keyPoints$.pipe(takeUntil(this.destroy$), auditTime(500)).subscribe((keyPoints: Keypoint[]) => {
+    this.keyPoints$.pipe(takeUntil(this.destroy$), auditTime(50)).subscribe((keyPoints: Keypoint[]) => {
       const leftRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'leftEye'));
       const rightRatio: number = this.getEyeAspectRatio(keyPoints.filter((e) => e.name === 'rightEye'));
       this.leftEyeClose$.next(leftRatio < 0.2);
       this.righEyeClose$.next(rightRatio < 0.2);
     });
     this.playAudioOnSleeping();
+    this.blinkingRate$.pipe(takeUntil(this.destroy$)).subscribe((value: number) => console.log(value));
   }
 
   private async initVideoStream(): Promise<void> {
@@ -191,6 +197,7 @@ export class DemoComponent implements AfterViewInit, OnDestroy {
         audioEl.play();
       } else {
         audioEl.pause();
+        audioEl.currentTime = 0;
       }
     });
   }
