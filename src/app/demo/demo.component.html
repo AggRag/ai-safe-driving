@@ -1,8 +1,27 @@
-<div class="demo-container">
-  <div class="columns">
-    <div class="column indicator"></div>
-    <div class="column dashboard"></div>
+<div class="demo">
+  <div class="container">
+    <div class="columns p-4">
+      <div class="column indicator" style="background-color: black">
+        <div class="py-2">
+          <span class="has-text-white is-size-4">BlinkRate &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">{{ (blinkingRate$ | async) || 24 }}</span>
+        </div>
+        <div class="py-2">
+          <span class="has-text-white is-size-4">Yawns &nbsp;:&nbsp;</span>
+          <span class="has-text-white is-size-4">{{ yawns$ | async }}</span>
+        </div>
+      </div>
+      <div class="column dashboard">
+        <div style="display: flex; flex-direction: column">
+          <div class="camera p-4" style="background-color: black">
+            <canvas #canvasRef width="700" height="500"></canvas>
+          </div>
+          <div class="box p-4" style="background-color: black">
+            <img src="/assets/dashboard.png" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <canvas #canvasRef width="800" height="800"></canvas>
-  <div>{{ sleeping$ | async }}</div>
 </div>
+<audio #audioRef hidden src="/assets/wake-up.mp3"></audio>
