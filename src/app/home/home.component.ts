@@ -37,3 +37,4 @@ export class HomeComponent implements OnInit {
     el.scrollTo(0, el.scrollTop - window.innerWidth);
   }
 }
+

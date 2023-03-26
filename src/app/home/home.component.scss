@@ -41,7 +41,7 @@ section {
   /*  backface visibility keeps font from looking weird  */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: rgb(20, 20, 20);
+  background-image: linear-gradient(to bottom right, #000000, #05070a, #1c2f35)
 }
 
 .road-strip {
@@ -69,10 +69,80 @@ $size: 36px;
   box-sizing: border-box;
 }
 
+.text-container{
+  width: auto;
+  padding-bottom: 20px;
+}
+
 .button{
   margin-right: 10px;
 }
 
+p{
+  font-size: 23px;
+}
+
 figure{
   margin-bottom: 10px;
+}
+
+
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile img {
+  width: 80px;
+  height: 80px;
+  margin: 0 10px;
+  border-radius: 50%;
+  transform: translateX(0);
+  transition: transform 0.5s;
+}
+
+.profile img:nth-child(1) {
+  animation: move-left 2.5s ease-in-out infinite;
+}
+
+.profile img:nth-child(2) {
+  animation: move-right 2.5s ease-in-out infinite;
+}
+
+.profile img:nth-child(3) {
+  animation: move-left 2.5s ease-in-out infinite;
+}
+
+.profile img:nth-child(4) {
+  animation: move-right 2.5s ease-in-out infinite;
+}
+
+.profile img:nth-child(5) {
+  animation: move-left 2.5s ease-in-out infinite;
+}
+
+@keyframes move-left {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes move-right {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
