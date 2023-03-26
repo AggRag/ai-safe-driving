@@ -13,7 +13,7 @@
           <div class="card-content is-overlay">
             <div style="position: relative; margin: 0; top: 50%">
               <h1 class="title has-text-white is-size-1">Hello Humans</h1>
-              <p class="subtitle has-text-white is-size-2">I am here to help you stay safe!</p>
+              <p class="subtitle has-text-white is-size-2">OpenEye is here to help you stay safe on roads!</p>
               <div>
                 <button class="button is-outlined is-medium" (click)="scrollToNextSection()">Next</button>
               </div>
@@ -32,9 +32,8 @@
           </div>
           <div class="column">
             <p class="subtitle has-text-white is-half">
-              Despite advancements in automotive technology, road accidents remain a significant public safety concern
-              worldwide. AI can be leveraged to identify and predict potentially hazardous scenarios on the road, alert
-              drivers and take necessary measures to prevent accidents before they occur.
+              Each year 13.5 lakh people are killed on roadways all over the world, out of this 2.7 lakh accidents ( 20% ) are caused by sleepiness, fatigue, and drowsy driving. <br><br>
+              The problem of drowsy driving is compounded by the fact that it can be difficult to detect. Unlike driving under the influence of alcohol or drugs, there is no simple test to determine whether a driver is too tired to drive safely.<br><br>Additionally, many people underestimate the effects of fatigue on their driving abilities, which can lead them to continue driving even when they are too tired.
             </p>
             <div>
               <button class="button is-outlined is-medium" (click)="scrollToPreviousSection()">Previous</button>
@@ -57,9 +56,7 @@
           </div>
           <div class="column">
             <p class="subtitle has-text-white is-half">
-              In 2019, according to figures from the US National Highway Traffic Safety Association (NHTSA), there were
-              697 fatalities caused by “drowsy driving.” In 2017, there were 91,000 police-reported crashes caused by a
-              tired driver. Around 50,000 people were injured as a result.
+              All over the world, 1 IN 5 SERIOUS CAR ACCIDENTS CAUSED BY SLEEP DEPRIVATION.
             </p>
             <div>
               <button class="button is-outlined is-medium" (click)="scrollToPreviousSection()">Previous</button>
@@ -85,20 +82,20 @@
           <div class="column">
             <p class="has-text-white title">This is why I was created</p>
             <p class="subtitle has-text-white">Meet my creators</p>
-            <div>
-              <figure class="image is-128x128">
+            <div class="profile">
+              <figure class="image is-128x128 pp">
                 <img class="is-rounded" src="../../assets/Vikash.png" />
               </figure>
-              <figure class="image is-128x128">
+              <figure class="image is-128x128 pp">
                 <img class="is-rounded" src="../../assets/Anil.png" />
               </figure>
-              <figure class="image is-128x128">
+              <figure class="image is-128x128 pp">
                 <img class="is-rounded" src="../../assets/Raghav.png" />
               </figure>
-              <figure class="image is-128x128">
+              <figure class="image is-128x128 pp">
                 <img class="is-rounded" src="../../assets/Yashika.png" />
               </figure>
-              <figure class="image is-128x128">
+              <figure class="image is-128x128 pp">
                 <img class="is-rounded" src="../../assets/Lovish.png" />
               </figure>
             </div>
@@ -119,9 +116,8 @@
             <div class="road-strip"></div>
           </div>
           <div class="column">
-            <p class="is-size-4 has-text-white">But</p>
-            <p class="is-size-4 has-text-white">I am not just restricted to this</p>
-            <p class="is-size-4 has-text-white">I can help you in many other ways.</p>
+            <p class="is-size-4 has-text-white">Our solution to the problem of drowsy driving is to use AI sleep detection technology (OpenEye) to monitor drivers and detect signs of drowsiness.<br><br>OpenEye uses sensors, and algorithms, and analyze the driver's behavior, such as eye movements, head position, and steering patterns, to determine whether the driver is drowsy or asleep.<br><br>When OpenEye detects signs of drowsiness, it alerts the driver with a warning signal, such as a sound or vibration, to encourage the driver to take a break or switch drivers.<br><br> 
+             </p>
             <div>
               <button class="button is-outlined is-medium" (click)="scrollToPreviousSection()">Previous</button>
               <button class="button is-outlined is-medium" (click)="scrollToNextSection()">Next</button>
@@ -201,12 +197,13 @@
           <div class="column is-one-quarter">
             <div class="road-strip"></div>
           </div>
-          <div class="column">
+          <div class="column text-container">
             <p class="has-text-white is-half is-size-4">
               Now that you have seen what I am capable of,<br />
-              how about I give you a demo
+              how about a ride with me!
             </p>
             <div>
+              <button class="button is-outlined is-medium" (click)="scrollToPreviousSection()">Previous</button>
               <a class="button is-outlined is-medium" [routerLink]="['/demo']">Quick Demo</a>
             </div>
           </div>
